@@ -13,12 +13,16 @@ import prelim.interfaceAndTemplate.MyList;
 import java.util.NoSuchElementException;
 
 /**
- * General Algorithm:
- * 1. Create a class that implements the MyList interface
- * 2. Create a constructor that initializes the list
- * 3. Implement MyList methods
+ * General Algorithm for Growing Array List:
+ * 1. Create an array with a default size
+ * 2. Check if the list is full
+ * 3. If full, create a new array with double the size
+ * 4. Copy the elements from the old array to the new array
+ * 5. Set the new array as the elements array
+ * 6. Insert the element into the list
+ * 7. End
  */
-public class MyGrowingArrayList<T> implements MyList {
+public class MyGrowingArrayList<T> implements MyList<T> {
     private final int DEFAULT_SIZE = 5;
     private Object[] elements;
     private int listSize;
@@ -47,7 +51,7 @@ public class MyGrowingArrayList<T> implements MyList {
      * @param data the element to be inserted
      * @throws ListOverflowException if the list is full
      */
-    public void insert(Object data) throws ListOverflowException {
+    public void insert(T data) throws ListOverflowException {
         // check if the list is full
         if (listSize == elements.length) {
             // create a new array with double the size
@@ -71,17 +75,22 @@ public class MyGrowingArrayList<T> implements MyList {
      * @return the element at the specified index
      * @throws NoSuchElementException if the index is out of bounds
      */
-    public T getElement(Object data) throws NoSuchElementException {
+    public T getElement(T data) throws NoSuchElementException {
         // search for the element in the list
         if (search(data) != -1) {
-            return (T) data;
+            return data;
         } else {
             throw new NoSuchElementException("Element not found.");
         } // end of if statement
     } // end of getElement method
 
     @Override
-    public boolean delete(Object data) {
+    /**
+     * Delete an element from the list
+     * @param data the element to be deleted
+     * @return true if the element is deleted, else false
+     */
+    public boolean delete(T data) {
         // search for the element in the list
         for (int i = 0; i < listSize; i++) {
             // if the element is found, delete it
@@ -100,7 +109,12 @@ public class MyGrowingArrayList<T> implements MyList {
     }
 
     @Override
-    public int search(Object data) {
+    /**
+     * Search for the element with the same value as the parameter
+     * @param data the element to be searched
+     * @return the index of the element if found, else -1
+     */
+    public int search(T data) {
         // search for the element in the list
         for (int i = 0; i < listSize; i++) {
             // if the element is found, return its index
@@ -111,6 +125,7 @@ public class MyGrowingArrayList<T> implements MyList {
         return -1; // return -1 if the element is not found
     } // end of search method
 
+    @Override
     /**
      * Get the element at the specified index
      * @param index the index of the element to be retrieved

@@ -13,7 +13,19 @@ import prelim.interfaceAndTemplate.ListOverflowException;
 import prelim.interfaceAndTemplate.MyList;
 import java.util.NoSuchElementException;
 
-public class MyDoublyLinkedList<T> implements MyList {
+
+/**
+ * General Algorithm for Doubly Linked List:
+ * 1. Create a new node
+ * 2. Check if the list is empty
+ * 3. If empty, set the new node as the head and tail
+ * 4. Else, set the next node of the tail to the new node
+ * 5. Ensure the new node points to the previous node
+ * 6. Set the new node as the tail
+ * 7. Increment the size of the list
+ * 8. End
+ */
+public class MyDoublyLinkedList<T> implements MyList<T> {
     private LinkedListNodeAggabaoArvy<T> head;
     private LinkedListNodeAggabaoArvy<T> tail;
     private int listSize;
@@ -42,9 +54,9 @@ public class MyDoublyLinkedList<T> implements MyList {
      * @param data the element to be inserted
      * @throws ListOverflowException if the list is full
      */
-    public void insert(Object data) throws ListOverflowException {
+    public void insert(T data) throws ListOverflowException {
         // Create a new node
-        LinkedListNodeAggabaoArvy<T> newNode = new LinkedListNodeAggabaoArvy<>((T) data);
+        LinkedListNodeAggabaoArvy<T> newNode = new LinkedListNodeAggabaoArvy<>(data);
         // Check if the list is empty
         if (head == null) {
             // If empty, set the new node as the head and tail
@@ -68,7 +80,7 @@ public class MyDoublyLinkedList<T> implements MyList {
      * @return the element if found, else throw NoSuchElementException
      * @throws NoSuchElementException if the element is not found
      */
-    public T getElement(Object data) throws NoSuchElementException {
+    public T getElement(T data) throws NoSuchElementException {
         LinkedListNodeAggabaoArvy<T> current = head;
         while (current != null) {
             if (current.getData().equals(data)) {
@@ -85,7 +97,7 @@ public class MyDoublyLinkedList<T> implements MyList {
      * @param data the element to be deleted
      * @return true if the element is deleted, else false
      */
-    public boolean delete(Object data) {
+    public boolean delete(T data) {
         // Check if the list is empty
         if (head == null) {
             // Return false if the list is empty
@@ -99,7 +111,7 @@ public class MyDoublyLinkedList<T> implements MyList {
             // This updates the tail if the list becomes empty
             if (head == null) {
                 tail = null;
-            } // end of if statemen
+            } // end of if statement
             // Decrement the size of the list
             listSize--;
             // Return true if the element is deleted
@@ -135,8 +147,8 @@ public class MyDoublyLinkedList<T> implements MyList {
      * @param data the element to be searched
      * @return the index of the element if found, else -1
      */
-    public int search(Object data) {
-        LinkedListNodeAggabaoArvy current = head;
+    public int search(T data) {
+        LinkedListNodeAggabaoArvy<T> current = head;
         int index = 0;
         while (current != null) {
             if (current.getData().equals(data)) {

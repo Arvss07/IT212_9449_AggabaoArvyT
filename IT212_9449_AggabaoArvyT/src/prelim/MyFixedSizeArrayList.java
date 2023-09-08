@@ -15,11 +15,11 @@ import java.util.NoSuchElementException;
 
 
 /**
- * General Algorithm:
- * 1. Create a fixed size array of objects
- * 2. Create a variable to keep track of the size of the list
- * 3. Implement the methods of the MyList interface
- *
+ * General Algorithm for Fixed Size Array List:
+ * 1. Create an array with a fixed size [5]
+ * 2. Create a constructor that initializes the list
+ * 3. Implement MyList methods
+ * 4. End
  */
 public class MyFixedSizeArrayList<T> implements MyList<T> {
     private final int MAX_SIZE = 5;
@@ -112,6 +112,7 @@ public class MyFixedSizeArrayList<T> implements MyList<T> {
         return -1; // Element not found
     } // end of search method
 
+    @Override
     /**
      * Get the element at the specified index
      * @param index the index of the element to be retrieved

@@ -15,15 +15,17 @@ import prelim.interfaceAndTemplate.MyList;
 import java.util.NoSuchElementException;
 
 /**
- * General Algorithm:
+ * General Algorithm for Singly Linked List:
  * 1. Create a new node
  * 2. Check if the list is empty
  * 3. If empty, set the new node as the head
- * 4. If not empty, traverse the list until the last node
+ * 4. Else, traverse the list until the last node
  * 5. Set the new node as the next node of the last node
+ * 6. Increment the size of the list
+ * 7. End
  */
 
-public class MySinglyLinkedList<T> implements MyList {
+public class MySinglyLinkedList<T> implements MyList<T> {
     private LinkedListNodeAggabaoArvy<T> head;
     private int listSize;
 
@@ -50,9 +52,9 @@ public class MySinglyLinkedList<T> implements MyList {
      * @param data the element to be inserted
      * @throws ListOverflowException if the list is full
      */
-    public void insert(Object data) throws ListOverflowException {
+    public void insert(T data) throws ListOverflowException {
         // Create a new node
-        LinkedListNodeAggabaoArvy<T> newNode = new LinkedListNodeAggabaoArvy<>((T) data);
+        LinkedListNodeAggabaoArvy<T> newNode = new LinkedListNodeAggabaoArvy<>(data);
         // Check if the list is empty
         if (head == null) {
             // If empty, set the new node as the head
@@ -67,6 +69,8 @@ public class MySinglyLinkedList<T> implements MyList {
             // Set the new node as the next node of the last node
             current.setNext(newNode);
         } // end of if-else statement
+        // Increment the size of the list
+        listSize++;
 
     } // end of insert method
 
@@ -77,7 +81,7 @@ public class MySinglyLinkedList<T> implements MyList {
      * @return the element if found, else throw NoSuchElementException
      * @throws NoSuchElementException if the element is not found
      */
-    public T getElement(Object data) throws NoSuchElementException {
+    public T getElement(T data) throws NoSuchElementException {
         LinkedListNodeAggabaoArvy<T> current = head;
         while (current != null) {
             if (current.getData().equals(data)) {
@@ -94,7 +98,7 @@ public class MySinglyLinkedList<T> implements MyList {
      * @param data the element to be deleted
      * @return true if the element is deleted, else false
      */
-    public boolean delete(Object data) {
+    public boolean delete(T data) {
         // Check if the list is empty
         if (head == null) {
             // Return false if the list is empty
@@ -135,8 +139,8 @@ public class MySinglyLinkedList<T> implements MyList {
      * @param data the element to be searched
      * @return the index of the element if found, else -1
      */
-    public int search(Object data) {
-        LinkedListNodeAggabaoArvy current = head;
+    public int search(T data) {
+        LinkedListNodeAggabaoArvy<T> current = head;
         int index = 0;
         while (current != null) {
             if (current.getData().equals(data)) {
@@ -151,6 +155,7 @@ public class MySinglyLinkedList<T> implements MyList {
         return -1;
     } // end of search method
 
+    @Override
     /**
      * Get the element at the specified index
      * @param index the index of the element to be retrieved
