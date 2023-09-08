@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 
 public class TestMySinglyLinkedList {
     public static void main(String[] args) {
-        MySinglyLinkedList list = new MySinglyLinkedList();
+        MySinglyLinkedList<Object> list = new MySinglyLinkedList<>();
 
         // Add random nodes to the list
         try {

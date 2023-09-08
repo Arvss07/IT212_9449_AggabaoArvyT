@@ -12,6 +12,8 @@ package prelim;
 import prelim.interfaceAndTemplate.LinkedListNodeAggabaoArvy;
 import prelim.interfaceAndTemplate.ListOverflowException;
 import prelim.interfaceAndTemplate.MyList;
+import prelim.interfaceAndTemplate.MyListCircular;
+
 import java.util.NoSuchElementException;
 
 /**
@@ -26,7 +28,7 @@ import java.util.NoSuchElementException;
  * 8. End
  */
 
-public class MySinglyLinkedCircularList<T> implements MyList<T> {
+public class MySinglyLinkedCircularList<T> implements MyList<T>, MyListCircular<T> {
     private LinkedListNodeAggabaoArvy<T> head;
     private int listSize;
 
@@ -55,25 +57,21 @@ public class MySinglyLinkedCircularList<T> implements MyList<T> {
      */
     public void insert(T data) throws ListOverflowException {
         // Create a new node
-        LinkedListNodeAggabaoArvy<T> newNode = new LinkedListNodeAggabaoArvy<>((T) data);
-        // Check if the list is empty
+        LinkedListNodeAggabaoArvy<T> newNode = new LinkedListNodeAggabaoArvy<>(data);
         if (head == null) {
             // If empty, set the new node as the head
+            // Make it circular by pointing the next node to itself
             head = newNode;
-            // Mske it circular by pointing the next node to itself
             head.setNext(head);
 
         } else {
-            // If not empty, traverse the list until the last node
+            // Find the last node and point it to the new node to keep it circular
             LinkedListNodeAggabaoArvy<T> current = head;
-            while (current.getNext() != null) {
+            while (current.getNext() != head) {
                 current = current.getNext();
             } // end of while loop
-            // Set the new node as the next node of the last node
+            newNode.setNext(head);
             current.setNext(newNode);
-
-            // Make the list circular by pointing the new node to the head
-            current.setNext(head);
         } // end of if-else statement
 
         // Increment the size of the list
@@ -95,7 +93,8 @@ public class MySinglyLinkedCircularList<T> implements MyList<T> {
                 // Return the element if found
                 return current.getData();
             }
-        } while (current != head);  // end of do-while loop
+            current = current.getNext();
+        } while (current.getNext() != head);  // update termination condition
 
         throw new NoSuchElementException("Element not found.");
     } // end of getElement method
@@ -109,7 +108,6 @@ public class MySinglyLinkedCircularList<T> implements MyList<T> {
     public boolean delete(T data) {
         // Check if the list is empty
         if (head == null) {
-            // Return false if the list is empty
             return false;
         } // end of if statement
 
@@ -119,6 +117,7 @@ public class MySinglyLinkedCircularList<T> implements MyList<T> {
                 // Remove the head node if the list has only one element
                 head = null;
             } else {
+                // Find the last node and update its next reference
                 LinkedListNodeAggabaoArvy<T> current = head;
                 while (current.getNext() != head) {
                     current = current.getNext();
@@ -130,25 +129,22 @@ public class MySinglyLinkedCircularList<T> implements MyList<T> {
             } // end of if-else statement
             // Decrement the size of the list
             listSize--;
-            // Return true if the element is deleted
             return true;
-        } // end of if statement
+        } else {
+            LinkedListNodeAggabaoArvy<T> current = head;
+            LinkedListNodeAggabaoArvy<T> prev = null;
 
-        // Traverse the list until the element is found
-        LinkedListNodeAggabaoArvy<T> current = head;
-        while(current.getNext() != head) {
-            // Check if the next node is the element to be deleted
-            if (current.getNext().getData().equals(data)) {
-                current.setNext(current.getNext().getNext());
-                // Decrement the size of the list
-                listSize--;
-                // Return true if the element is deleted
-                return true;
-            } // end of if statement
-            // Move to the next node
-            current = current.getNext();
-        } // end of while loop
-        return false;
+            for (int i = 0; i < listSize; i++) {
+                if (current.getData().equals(data)) {
+                    prev.setNext(current.getNext());
+                    listSize--;
+                    return true;
+                }
+                prev = current;
+                current = current.getNext();
+            }
+            return false; // Data not found in the list
+        } // end of if-else statement
     } // end of delete method
 
     @Override
@@ -159,20 +155,13 @@ public class MySinglyLinkedCircularList<T> implements MyList<T> {
      */
     public int search(T data) {
         LinkedListNodeAggabaoArvy<T> current = head;
-        int index = 0;
-        // Traverse the list until the element is found
-        do {
-            // Check if the current node is the element to be searched
+        for (int i = 0; i < listSize; i++) {
             if (current.getData().equals(data)) {
-                // Return the index of the element if found
-                return index;
+                return i;
             }
-            // Move to the next node
             current = current.getNext();
-            index++;
-        } while (current != head); // end of do-while loop
-        // Return -1 if the element is not found
-        return -1;
+        }
+        return -1; // Data not found in the list
     } // end of search method
 
     /**
@@ -206,11 +195,46 @@ public class MySinglyLinkedCircularList<T> implements MyList<T> {
         System.out.println("List contents [Singly Linked Circular List]: ");
         int currentIndex = 0;
         do {
-            System.out.print("Element " + currentIndex + ": " + current.getData() + " ");
+            System.out.print(current.getData());
             current = current.getNext();
             currentIndex++;
         } while (current != head);
 
         System.out.println();
     } // end of display method
+
+    @Override
+    public void insertAtFront(T data) {
+        // Create a new node
+        LinkedListNodeAggabaoArvy<T> newNode = new LinkedListNodeAggabaoArvy<>(data);
+        if (head == null) {
+            // If empty, set the new node as the head
+            // Make it circular by pointing the next node to itself
+            head = newNode;
+            head.setNext(head);
+        } else {
+            // Find the last node and point it to the new node to keep it circular
+            LinkedListNodeAggabaoArvy<T> current = head;
+            while (current.getNext() != head) {
+                current = current.getNext();
+            }
+            newNode.setNext(head);
+            current.setNext(newNode);
+            head = newNode; // Update the head to the new node
+        }
+
+        // Increment the size of the list
+        listSize++;
+    }
+
+    @Override
+    public void clear() {
+        head = null;
+        listSize = 0;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return listSize == 0;
+    }
 } // end of class
